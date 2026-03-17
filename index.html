@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Motoclick - Onboarding</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="ios-app">
+        <header class="ios-navbar">
+            <h1>Motoclick Onboarding</h1>
+            <p>Complete this form to activate your account</p>
+        </header>
+
+        <main class="ios-content">
+            <form id="onboarding-form">
+                
+                <!-- Section A -->
+                <div class="section-title">A. Business Information</div>
+                <div class="ios-form-group">
+                    <div class="ios-input-row">
+                        <label for="legal_name">Legal Business Name <span class="req">*</span></label>
+                        <input type="text" id="legal_name" name="legal_name" required placeholder="e.g. La Esquina Crioia LLC">
+                    </div>
+                    <div class="ios-input-row">
+                        <label for="trade_name">DBA / Trade Name <span class="req">*</span></label>
+                        <input type="text" id="trade_name" name="trade_name" required placeholder="e.g. La Esquina">
+                    </div>
+                    <div class="ios-input-row">
+                        <label for="contact_name">Primary Contact Name <span class="req">*</span></label>
+                        <input type="text" id="contact_name" name="contact_name" required placeholder="Full name">
+                    </div>
+                    <div class="ios-input-row">
+                        <label for="title_role">Title / Role</label>
+                        <input type="text" id="title_role" name="title_role" placeholder="Owner / Manager / CEO">
+                    </div>
+                    <div class="ios-input-row">
+                        <label for="email">Email <span class="req">*</span></label>
+                        <input type="email" id="email" name="email" required placeholder="contact@restaurant.com">
+                    </div>
+                    <div class="ios-input-row">
+                        <label for="phone">Phone <span class="req">*</span></label>
+                        <input type="tel" id="phone" name="phone" required placeholder="+1 (718) 555-0000">
+                    </div>
+                    <div class="ios-input-row">
+                        <label for="city">City / Borough <span class="req">*</span></label>
+                        <input type="text" id="city" name="city" required placeholder="Brooklyn / Manhattan...">
+                    </div>
+                    <div class="ios-input-row">
+                        <label for="zip_code">ZIP Code</label>
+                        <input type="text" id="zip_code" name="zip_code" placeholder="11201">
+                    </div>
+                    <div class="ios-input-row">
+                        <label for="locations">Number of Locations <span class="req">*</span></label>
+                        <input type="number" id="locations" name="locations" required placeholder="e.g. 1">
+                    </div>
+                    <div class="ios-input-row">
+                        <label for="address">Main Address <span class="req">*</span></label>
+                        <input type="text" id="address" name="address" required placeholder="Street, City, State, ZIP">
+                    </div>
+                    <div class="ios-input-row stacked">
+                        <label>Business Type <span class="req">*</span></label>
+                        <div class="ios-radio-group">
+                            <label><input type="radio" name="business_type" value="Restaurant" required> Restaurant</label>
+                            <label><input type="radio" name="business_type" value="Bakery"> Bakery</label>
+                            <label><input type="radio" name="business_type" value="Grocery"> Grocery</label>
+                            <label><input type="radio" name="business_type" value="Dark Kitchen"> Dark Kitchen</label>
+                            <label><input type="radio" name="business_type" value="Chain"> Chain</label>
+                            <label><input type="radio" name="business_type" value="Franchise"> Franchise</label>
+                        </div>
+                    </div>
+                    <div class="ios-input-row stacked">
+                        <label for="operating_hours">Operating Hours</label>
+                        <textarea id="operating_hours" name="operating_hours" placeholder="e.g. Mon-Fri 11am-11pm, Sat-Sun 12pm-12am"></textarea>
+                    </div>
+                </div>
+
+                <!-- Section B -->
+                <div class="section-title">B. Operational Profile</div>
+                <div class="ios-form-group">
+                    <div class="ios-input-row">
+                        <label for="avg_orders">Average Orders / Day <span class="req">*</span></label>
+                        <input type="number" id="avg_orders" name="avg_orders" required placeholder="e.g. 30">
+                    </div>
+                    <div class="ios-input-row">
+                        <label for="avg_ticket">Average Ticket ($)</label>
+                        <input type="number" id="avg_ticket" name="avg_ticket" placeholder="e.g. 35">
+                    </div>
+                    <div class="ios-input-row">
+                        <label for="peak_hours">Peak Hours</label>
+                        <input type="text" id="peak_hours" name="peak_hours" placeholder="e.g. 12pm-2pm and 6pm-9pm">
+                    </div>
+                    <div class="ios-input-row stacked">
+                        <label>Own Delivery Drivers? <span class="req">*</span></label>
+                        <div class="ios-segmented-control">
+                            <label><input type="radio" name="own_drivers" value="Yes" required> <span>Yes</span></label>
+                            <label><input type="radio" name="own_drivers" value="No"> <span>No</span></label>
+                            <label><input type="radio" name="own_drivers" value="Partially"> <span>Partially</span></label>
+                        </div>
+                    </div>
+                    <div class="ios-input-row stacked">
+                        <label>Currently Self-Delivering? <span class="req">*</span></label>
+                        <div class="ios-segmented-control">
+                            <label><input type="radio" name="self_delivering" value="Yes" required> <span>Yes</span></label>
+                            <label><input type="radio" name="self_delivering" value="No"> <span>No</span></label>
+                        </div>
+                    </div>
+                    <div class="ios-input-row stacked">
+                        <label>Currently Using 3PL?</label>
+                        <div class="ios-segmented-control">
+                            <label><input type="radio" name="using_3pl" value="Yes"> <span>Yes</span></label>
+                            <label><input type="radio" name="using_3pl" value="No"> <span>No</span></label>
+                        </div>
+                    </div>
+                    <div class="ios-input-row stacked">
+                        <label>Current Pain Points</label>
+                        <div class="ios-checkbox-group">
+                            <label><input type="checkbox" name="pain_points" value="Delays"> Delays</label>
+                            <label><input type="checkbox" name="pain_points" value="High costs"> High costs</label>
+                            <label><input type="checkbox" name="pain_points" value="Cancellations"> Cancellations</label>
+                            <label><input type="checkbox" name="pain_points" value="Support issues"> Support issues</label>
+                            <label><input type="checkbox" name="pain_points" value="Multiple issues"> Multiple issues</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section C -->
+                <div class="section-title">C. Current Channels & Tech</div>
+                <div class="ios-form-group">
+                    <div class="ios-input-row stacked">
+                        <label>Active Delivery Platforms</label>
+                        <div class="ios-checkbox-group">
+                            <label><input type="checkbox" name="delivery_platforms" value="Uber Eats"> Uber Eats</label>
+                            <label><input type="checkbox" name="delivery_platforms" value="DoorDash"> DoorDash</label>
+                            <label><input type="checkbox" name="delivery_platforms" value="Grubhub"> Grubhub</label>
+                            <label><input type="checkbox" name="delivery_platforms" value="None"> None</label>
+                        </div>
+                    </div>
+                    <div class="ios-input-row stacked">
+                        <label>POS / Middleware System</label>
+                        <div class="ios-checkbox-group">
+                            <label><input type="checkbox" name="pos_system" value="Toast"> Toast</label>
+                            <label><input type="checkbox" name="pos_system" value="Deliverect"> Deliverect</label>
+                            <label><input type="checkbox" name="pos_system" value="Square/Clover"> Square/Clover</label>
+                            <label><input type="checkbox" name="pos_system" value="ChowNow/Olo"> ChowNow/Olo</label>
+                            <label><input type="checkbox" name="pos_system" value="Other"> Other</label>
+                            <label><input type="checkbox" name="pos_system" value="None"> None</label>
+                        </div>
+                    </div>
+                    <div class="ios-input-row stacked">
+                        <label>Own Website with Orders?</label>
+                        <div class="ios-segmented-control">
+                            <label><input type="radio" name="own_website" value="Yes"> <span>Yes</span></label>
+                            <label><input type="radio" name="own_website" value="No"> <span>No</span></label>
+                        </div>
+                    </div>
+                    <div class="ios-input-row stacked">
+                        <label>Own App?</label>
+                        <div class="ios-segmented-control">
+                            <label><input type="radio" name="own_app" value="Yes"> <span>Yes</span></label>
+                            <label><input type="radio" name="own_app" value="No"> <span>No</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section D -->
+                <div class="section-title">D. Motoclick Integration</div>
+                <div class="ios-form-group">
+                    <div class="ios-input-row stacked">
+                        <label>Service Type <span class="req">*</span></label>
+                        <div class="ios-radio-group">
+                            <label><input type="radio" name="service_type" value="API" required> Last mile solution via API</label>
+                            <label><input type="radio" name="service_type" value="Own Integration"> Last mile solution via own integration</label>
+                        </div>
+                    </div>
+                    <div class="ios-input-row stacked">
+                        <label>When Do You Need to Go Live? <span class="req">*</span></label>
+                        <div class="ios-radio-group grid-2">
+                            <label><input type="radio" name="go_live" value="This week" required> This week</label>
+                            <label><input type="radio" name="go_live" value="In 2 weeks"> In 2 weeks</label>
+                            <label><input type="radio" name="go_live" value="In 1 month"> In 1 month</label>
+                            <label><input type="radio" name="go_live" value="More than 1 month"> More than 1 month</label>
+                        </div>
+                    </div>
+                    <div class="ios-input-row stacked">
+                        <label for="main_problem">Main Problem to Solve</label>
+                        <textarea id="main_problem" name="main_problem" placeholder="Describe what you need to improve with Motoclick..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Section E -->
+                <div class="section-title section-orange">E. Billing & Payment</div>
+                <div class="ios-notice success">
+                    Payment method: Weekly automatic debit (card) — Motoclick charges every Monday automatically. Card details are collected securely when signing the DocuSign contract.
+                </div>
+                <div class="ios-form-group">
+                    <div class="ios-input-row">
+                        <label for="contract_name">Legal Name for Contract <span class="req">*</span></label>
+                        <input type="text" id="contract_name" name="contract_name" required placeholder="e.g. La Esquina LLC">
+                    </div>
+                    <div class="ios-input-row">
+                        <label for="ein_tax_id">EIN / Tax ID</label>
+                        <input type="text" id="ein_tax_id" name="ein_tax_id" placeholder="e.g. 12-3456789">
+                    </div>
+                    <div class="ios-input-row">
+                        <label for="billing_address">Billing Address <span class="req">*</span></label>
+                        <input type="text" id="billing_address" name="billing_address" required placeholder="Street, City, State, ZIP">
+                    </div>
+                    <div class="ios-input-row">
+                        <label for="authorized_signatory">Authorized Signatory <span class="req">*</span></label>
+                        <input type="text" id="authorized_signatory" name="authorized_signatory" required placeholder="Full name of person signing">
+                    </div>
+                </div>
+                <div class="ios-notice warning">
+                    Card details are NOT collected in this form. They are captured securely at DocuSign contract signing.
+                </div>
+
+                <!-- Section F -->
+                <div class="section-title">F. Communication Preferences</div>
+                <div class="ios-form-group">
+                    <div class="ios-input-row stacked">
+                        <label>Preferred Communication Channel <span class="req">*</span></label>
+                        <div class="ios-radio-group grid-3">
+                            <label><input type="radio" name="comm_channel" value="Slack" required> Slack</label>
+                            <label><input type="radio" name="comm_channel" value="WhatsApp"> WhatsApp</label>
+                            <label><input type="radio" name="comm_channel" value="Email"> Email</label>
+                        </div>
+                    </div>
+                    <div class="ios-input-row stacked">
+                        <label>Weekly Check-in Call?</label>
+                        <div class="ios-segmented-control">
+                            <label><input type="radio" name="weekly_call" value="Yes"> <span>Yes</span></label>
+                            <label><input type="radio" name="weekly_call" value="No"> <span>No</span></label>
+                        </div>
+                    </div>
+                    <div class="ios-input-row stacked">
+                        <label>WhatsApp Group with Ops Team?</label>
+                        <div class="ios-segmented-control">
+                            <label><input type="radio" name="wa_group" value="Yes"> <span>Yes</span></label>
+                            <label><input type="radio" name="wa_group" value="No"> <span>No</span></label>
+                        </div>
+                    </div>
+                    <div class="ios-input-row stacked">
+                        <label for="notes">Additional Notes</label>
+                        <textarea id="notes" name="notes" placeholder="Anything else we should know before onboarding?"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    <p class="footer-note">Once submitted, your Motoclick agent will contact you within 2 hours - Discovery call within 24 hours - Proposal & contract within 48 hours</p>
+                    <button type="submit" class="ios-button">Submit Application</button>
+                    <div id="form-msg" class="form-message"></div>
+                </div>
+
+            </form>
+        </main>
+    </div>
+
+    <!-- Main Logic -->
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
