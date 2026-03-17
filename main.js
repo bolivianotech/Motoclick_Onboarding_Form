@@ -150,7 +150,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                 comm_channel: data.comm_channel,
                 weekly_call: data.weekly_call,
                 wa_group: data.wa_group,
-                notes: data.notes
+                notes: data.notes,
+                
+                // G. Access Credentials
+                cred_doordash_user: data.cred_doordash_user,
+                cred_doordash_pass: data.cred_doordash_pass,
+                cred_doordash_notes: data.cred_doordash_notes,
+                
+                cred_uber_user: data.cred_uber_user,
+                cred_uber_pass: data.cred_uber_pass,
+                cred_uber_notes: data.cred_uber_notes,
+                
+                cred_delivery_user: data.cred_delivery_user,
+                cred_delivery_pass: data.cred_delivery_pass,
+                cred_delivery_notes: data.cred_delivery_notes,
+                
+                cred_own_user: data.cred_own_user,
+                cred_own_pass: data.cred_own_pass,
+                cred_own_notes: data.cred_own_notes
             };
 
             // Uncomment the lines below once you have added real VITE_SUPABASE_URL and KEY in .env
