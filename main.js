@@ -10,16 +10,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // PDF Generation Listener
     const btnGeneratePdf = document.getElementById('btn-generate-pdf');
+    const btnSubmit = document.getElementById('btn-submit');
+    const pdfNotice = document.getElementById('pdf-notice');
+    
     if (btnGeneratePdf) {
         btnGeneratePdf.addEventListener('click', () => {
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
             
-            // Manual overrides from radio/checkbox groups if needed on PDF
-            data.self_delivering = formData.get('self_delivering') || null; 
+            // Also capture array fields (checkboxes)
+            data.pain_points = formData.getAll('pain_points');
+            data.delivery_platforms = formData.getAll('delivery_platforms');
+            data.pos_system = formData.getAll('pos_system');
 
             // Trigger the pop-out native print functionality
             openPdfPreview(data);
+
+            // Unlock Submit button after PDF is generated
+            btnSubmit.disabled = false;
+            btnSubmit.style.opacity = '1';
+            btnSubmit.style.cursor = 'pointer';
+            btnSubmit.innerText = 'Step 2 — Submit Application ✔';
+            
+            // Hide the warning notice and show a success confirmation
+            pdfNotice.className = 'ios-notice success';
+            pdfNotice.innerText = '✅ PDF generated! You can now submit your application.';
         });
     }
 

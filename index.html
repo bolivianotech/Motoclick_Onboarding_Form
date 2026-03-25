@@ -285,8 +285,15 @@
 
                 <div class="form-footer">
                     <p class="footer-note">Once submitted, your Motoclick agent will contact you within 2 hours - Discovery call within 24 hours - Proposal & contract within 48 hours</p>
-                    <button type="button" id="btn-generate-pdf" class="ios-button" style="background-color: #007AFF; margin-bottom: 12px;">Generar / Ver PDF</button>
-                    <button type="submit" class="ios-button">Submit Application</button>
+                    
+                    <!-- Step 1: Generate and print the PDF first -->
+                    <button type="button" id="btn-generate-pdf" class="ios-button" style="background-color: #007AFF; margin-bottom: 12px;">Step 1 — Generate & Print PDF</button>
+                    
+                    <!-- Step 2: locked until PDF is generated -->
+                    <div id="pdf-notice" class="ios-notice warning" style="margin-bottom: 12px;">
+                        ⚠️ Please generate and print the PDF document first before submitting.
+                    </div>
+                    <button type="submit" id="btn-submit" class="ios-button" disabled style="opacity: 0.4; cursor: not-allowed;">Step 2 — Submit Application</button>
                     <div id="form-msg" class="form-message"></div>
                 </div>
 
