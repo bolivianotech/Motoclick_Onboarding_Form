@@ -19,6 +19,8 @@ export function openPdfPreview(data) {
             line-height: 1.6; 
             color: #333; 
             margin: 0; 
+            /* Padding as fallback for browsers that ignore @page margins in popups */
+            padding: 1.5cm 1cm 1.5cm 2cm;
             background: white; 
         }
         .header {
