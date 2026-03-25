@@ -8,36 +8,13 @@
 </head>
 <body>
     <div class="ios-app">
-        <!-- Auth View -->
-        <div id="auth-view" class="ios-content">
-            <header class="ios-navbar">
-                <h1>Welcome to Motoclick</h1>
-                <p>Enter your email to receive a secure login link.</p>
-            </header>
-            <div class="ios-form-group" style="margin-top:20px;">
-                <div class="ios-input-row">
-                    <label for="auth-email">Email</label>
-                    <input type="email" id="auth-email" placeholder="agent@motoclick.com">
-                </div>
-            </div>
-            <div class="form-footer">
-                <button id="send-magic-link" class="ios-button">Send Magic Link</button>
-                <div id="auth-msg" class="form-message"></div>
-            </div>
-        </div>
+        <header class="ios-navbar">
+            <h1>Motoclick Onboarding</h1>
+            <p>Complete this form to activate your account</p>
+        </header>
 
-        <!-- Form View (Hidden by default) -->
-        <div id="form-view" style="display: none;">
-            <header class="ios-navbar">
-                <h1>Motoclick Onboarding</h1>
-                <p>Complete this form to activate your account <br> <span id="user-status" style="font-size: 11px; opacity: 0.7;"></span></p>
-                <div style="text-align: right; margin-top: -30px;">
-                    <button id="btn-logout" style="background: none; border: none; color: white; opacity: 0.8; font-size: 13px; cursor: pointer;">Logout</button>
-                </div>
-            </header>
-
-            <main class="ios-content">
-                <form id="onboarding-form">
+        <main class="ios-content">
+            <form id="onboarding-form">
                 
                 <!-- Section A -->
                 <div class="section-title">A. Business Information</div>
@@ -314,8 +291,7 @@
                 </div>
 
             </form>
-            </main>
-        </div>
+        </main>
     </div>
 
     <!-- Main Logic -->

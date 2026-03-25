@@ -2,84 +2,11 @@ import { supabase } from './supabase.js';
 import { openPdfPreview } from './pdf-generator.js';
 
 
-let currentUser = null;
-
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('onboarding-form');
     const msgElement = document.getElementById('form-msg');
     const submitButton = form.querySelector('button[type="submit"]');
 
-    const authView = document.getElementById('auth-view');
-    const formView = document.getElementById('form-view');
-    const authMsg = document.getElementById('auth-msg');
-    const sendLinkBtn = document.getElementById('send-magic-link');
-    const userStatus = document.getElementById('user-status');
-    const logoutBtn = document.getElementById('btn-logout');
-
-    // 1. OMITIDO - Acceso libre sin autenticación
-    showForm({ id: null, email: 'guest@motoclick.com' });
-
-    /* Ocultamos los listeners de sesión de Supabase
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session) showForm(session.user);
-    else showAuth();
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-        if (session) showForm(session.user);
-        else showAuth();
-    });
-    */
-
-    // 2. Handle Magic Link Sending
-    sendLinkBtn.addEventListener('click', async () => {
-        const emailInput = document.getElementById('auth-email').value;
-        if (!emailInput) {
-            authMsg.innerText = "Please enter an email.";
-            authMsg.className = 'form-message error';
-            return;
-        }
-
-        sendLinkBtn.disabled = true;
-        sendLinkBtn.innerText = "Sending...";
-        authMsg.innerText = "";
-
-        const { error } = await supabase.auth.signInWithOtp({
-            email: emailInput,
-            options: {
-                // Ensure the users are redirected back to this exact window after clicking link
-                emailRedirectTo: window.location.origin
-            }
-        });
-
-        if (error) {
-            authMsg.innerText = error.message;
-            authMsg.className = 'form-message error';
-            sendLinkBtn.disabled = false;
-            sendLinkBtn.innerText = "Send Magic Link";
-        } else {
-            authMsg.innerText = "Check your email for the magic link!";
-            authMsg.className = 'form-message success';
-            sendLinkBtn.innerText = "Sent!";
-        }
-    });
-
-    // 3. Handle Logout
-    logoutBtn.addEventListener('click', async () => {
-        await supabase.auth.signOut();
-    });
-
-    function showAuth() {
-        authView.style.display = 'block';
-        formView.style.display = 'none';
-        currentUser = null;
-    }
-
-    function showForm(user) {
-        authView.style.display = 'none';
-        formView.style.display = 'block';
-        currentUser = user;
-        userStatus.innerText = `Logged in as: ${user.email}`;
-    }
 
     // PDF Generation Listener
     const btnGeneratePdf = document.getElementById('btn-generate-pdf');
@@ -122,9 +49,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Construct payload according to our Database schema fields
             // Assuming our Supabase table is named 'merchants'
             const payload = {
-                // Attach a static user id since the form is now public
-                agent_id: (currentUser && currentUser.id) ? currentUser.id : null,
-                
                 legal_name: data.legal_name,
                 trade_name: data.trade_name,
                 contact_name: data.contact_name,
