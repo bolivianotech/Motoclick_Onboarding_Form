@@ -1,4 +1,6 @@
 import { supabase } from './supabase.js';
+import { openPdfPreview } from './pdf-generator.js';
+
 
 let currentUser = null;
 
@@ -14,23 +16,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     const userStatus = document.getElementById('user-status');
     const logoutBtn = document.getElementById('btn-logout');
 
-    // 1. Check current session
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (session) {
-        showForm(session.user);
-    } else {
-        showAuth();
-    }
+    // 1. OMITIDO - Acceso libre sin autenticación
+    showForm({ id: null, email: 'guest@motoclick.com' });
 
-    // Listen for auth state changes (e.g., user clicks magic link and comes back)
+    /* Ocultamos los listeners de sesión de Supabase
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) showForm(session.user);
+    else showAuth();
+
     supabase.auth.onAuthStateChange((_event, session) => {
-        if (session) {
-            showForm(session.user);
-        } else {
-            showAuth();
-        }
+        if (session) showForm(session.user);
+        else showAuth();
     });
+    */
 
     // 2. Handle Magic Link Sending
     sendLinkBtn.addEventListener('click', async () => {
@@ -83,6 +81,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         userStatus.innerText = `Logged in as: ${user.email}`;
     }
 
+    // PDF Generation Listener
+    const btnGeneratePdf = document.getElementById('btn-generate-pdf');
+    if (btnGeneratePdf) {
+        btnGeneratePdf.addEventListener('click', () => {
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Manual overrides from radio/checkbox groups if needed on PDF
+            data.self_delivering = formData.get('self_delivering') || null; 
+
+            // Trigger the pop-out native print functionality
+            openPdfPreview(data);
+        });
+    }
+
     // 4. Update the form submission to include to who this record belongs
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -109,8 +122,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Construct payload according to our Database schema fields
             // Assuming our Supabase table is named 'merchants'
             const payload = {
-                // Attach the user id to audit who created this form
-                agent_id: currentUser.id,
+                // Attach a static user id since the form is now public
+                agent_id: (currentUser && currentUser.id) ? currentUser.id : null,
                 
                 legal_name: data.legal_name,
                 trade_name: data.trade_name,
