@@ -377,3 +377,171 @@ textarea {
     text-align: center;
     font-weight: 500;
 }
+
+/* ===== TIME SLOT BUILDER ===== */
+.time-slot-entry {
+    background: #F8F8F8;
+    border: 1px solid #E3E3E8;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+.slot-days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 12px;
+}
+.slot-day-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ios-text-secondary);
+    cursor: pointer;
+    gap: 4px;
+}
+.slot-day-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--ios-blue);
+}
+.slot-time-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+.slot-time-block {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ios-text-secondary);
+}
+.slot-time-block select {
+    border: 1px solid var(--ios-gray);
+    border-radius: 6px;
+    padding: 6px 4px;
+    font-size: 16px;
+    font-family: inherit;
+    background: white;
+    -webkit-appearance: none;
+    text-align: center;
+    width: 58px;
+}
+.slot-arrow {
+    font-size: 18px;
+    color: var(--ios-blue);
+    padding: 0 4px;
+}
+.slot-date-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+.slot-date-row > div label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ios-text-secondary);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+}
+.slot-date-row input[type="date"] {
+    width: 100%;
+    border: 1px solid var(--ios-gray);
+    border-radius: 6px;
+    padding: 7px 8px;
+    font-size: 14px;
+    font-family: inherit;
+    background: white;
+}
+.btn-remove-slot {
+    background: none;
+    border: none;
+    color: var(--ios-red);
+    font-size: 13px;
+    cursor: pointer;
+    padding: 4px 0;
+    font-family: inherit;
+}
+.ios-button-secondary {
+    background: none;
+    border: 1.5px solid var(--ios-blue);
+    color: var(--ios-blue);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    font-family: inherit;
+    transition: background 0.15s;
+}
+.ios-button-secondary:hover {
+    background: #EBF4FF;
+}
+
+/* ===== CONDITIONAL FIELDS ===== */
+.conditional-field {
+    display: none;
+    margin-top: 12px;
+    width: 100%;
+}
+.conditional-field.visible {
+    display: block;
+}
+.conditional-input {
+    width: 100%;
+    border: 1px solid var(--ios-gray);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 16px;
+    font-family: inherit;
+    outline: none;
+    background: white;
+    color: var(--ios-text);
+}
+.conditional-input:focus {
+    border-color: var(--ios-blue);
+}
+
+/* ===== LOGO UPLOAD ===== */
+.logo-upload-area {
+    border: 2px dashed var(--ios-gray);
+    border-radius: 10px;
+    padding: 20px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    margin-top: 8px;
+    width: 100%;
+}
+.logo-upload-area:hover, .logo-upload-area.dragover {
+    border-color: var(--ios-blue);
+    background: #EBF4FF;
+}
+.logo-upload-area p {
+    color: var(--ios-text-secondary);
+    font-size: 14px;
+    margin-top: 8px;
+}
+.logo-upload-area input[type="file"] {
+    display: none;
+}
+#logo-preview {
+    max-width: 120px;
+    max-height: 120px;
+    display: none;
+    margin: 12px auto 0;
+    border-radius: 8px;
+    object-fit: contain;
+    border: 1px solid var(--ios-gray);
+}
