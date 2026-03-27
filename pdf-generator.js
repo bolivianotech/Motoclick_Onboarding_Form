@@ -25,21 +25,31 @@ export function openPdfPreview(data) {
         }
         .header {
             text-align: center;
-            border-bottom: 2px solid #005bb5;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
+            /* To repeat on each page, we use a fixed element but need to wrap content with margin/padding */
         }
-        .header h1 {
-            font-size: 22px;
-            margin: 0;
-            color: #005bb5;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .header img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
         }
-        .header p {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
+        @media print {
+            /* Keep header at top of each page if possible */
+            .page-header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 80px;
+                text-align: center;
+                border-bottom: 2px solid #005bb5;
+                background: white;
+                z-index: 1000;
+            }
+            body {
+                margin-top: 100px; /* Offset for repeating header */
+            }
         }
         h2 { 
             font-size: 15px; 
@@ -115,9 +125,9 @@ export function openPdfPreview(data) {
         </div>
 
         <div class="header">
-            <h1>Motoclick Merchant Application</h1>
-            <p>Official Integration & Onboarding Document | generated on ${new Date().toLocaleDateString()}</p>
+            <img src="${window.location.origin}/assets/header.png" alt="Motoclick Logo Banner">
         </div>
+        <div class="footer">Document generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</div>
         
         <div class="section">
             <h2>A. Business Information</h2>

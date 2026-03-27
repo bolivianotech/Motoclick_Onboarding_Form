@@ -104,19 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('app-link-field').classList.toggle('visible', r.value === 'Yes' && r.checked);
         });
     });
-    // Logo preview
-    document.getElementById('logo_file')?.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = ev => {
-                const preview = document.getElementById('logo-preview');
-                preview.src = ev.target.result;
-                preview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-    });
     // ===== END CONDITIONAL FIELDS =====
 
     // PDF Generation Listener
@@ -161,22 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const deliveryPlatforms = formData.getAll('delivery_platforms');
             const posSystem = formData.getAll('pos_system');
 
-            // Handle logo upload to Supabase Storage
-            let logoUrl = null;
-            const logoFile = document.getElementById('logo_file')?.files[0];
-            if (logoFile) {
-                const fileExt = logoFile.name.split('.').pop();
-                const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}.${fileExt}`;
-                const { error: uploadError } = await supabase.storage
-                    .from('logos')
-                    .upload(fileName, logoFile, { cacheControl: '3600', upsert: false });
-                if (!uploadError) {
-                    const { data: urlData } = supabase.storage.from('logos').getPublicUrl(fileName);
-                    logoUrl = urlData.publicUrl;
-                } else {
-                    console.warn('Logo upload error (non-fatal):', uploadError.message);
-                }
-            }
+
 
             const payload = {
                 legal_name: data.legal_name,
@@ -189,7 +161,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 zip_code: data.zip_code,
                 locations: parseInt(data.locations) || 1,
                 address: data.address,
-                logo_url: logoUrl,
                 business_type: data.business_type,
                 operating_hours: data.operating_hours, // JSON string from serializeSlots()
 
@@ -250,6 +221,21 @@ document.addEventListener('DOMContentLoaded', () => {
             slotCount = 0;
             addTimeSlot();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Send notification email via n8n webhook
+            try {
+                fetch('https://n8n.motoclickapp.com/webhook/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: "benjaherediaruiz@gmail.com",
+                        subject: "Bienvenido",
+                        message: `New onboarding submission: ${data.trade_name || data.legal_name}`
+                    })
+                });
+            } catch (err) {
+                console.warn('Notification webhook failed:', err);
+            }
 
         } catch (error) {
             console.error('Error submitting form:', error);
