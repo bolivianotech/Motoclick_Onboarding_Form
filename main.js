@@ -1,5 +1,5 @@
 import { supabase } from './supabase.js';
-import { openPdfPreview } from './pdf-generator.js';
+import { openPdfPreview, generatePdfBlob } from './pdf-generator.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('onboarding-form');
@@ -107,28 +107,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== END CONDITIONAL FIELDS =====
 
     // PDF Generation Listener
-    const btnGeneratePdf = document.getElementById('btn-generate-pdf');
-    const btnSubmit = document.getElementById('btn-submit');
-    const pdfNotice = document.getElementById('pdf-notice');
-
-    if (btnGeneratePdf) {
-        btnGeneratePdf.addEventListener('click', () => {
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-            data.pain_points = formData.getAll('pain_points');
-            data.delivery_platforms = formData.getAll('delivery_platforms');
-            data.pos_system = formData.getAll('pos_system');
-            data.operating_hours = serializeSlots();
-            openPdfPreview(data);
-            // Unlock Submit button after PDF is generated
-            btnSubmit.disabled = false;
-            btnSubmit.style.opacity = '1';
-            btnSubmit.style.cursor = 'pointer';
-            btnSubmit.innerText = 'Step 2 — Submit Application ✔';
-            pdfNotice.className = 'ios-notice success';
-            pdfNotice.innerText = '✅ PDF generated! You can now submit your application.';
-        });
-    }
+    // Step logic removed - single button now.
+    submitButton.disabled = false;
+    submitButton.style.opacity = '1';
+    submitButton.style.cursor = 'pointer';
+    submitButton.innerText = 'Submit Application';
 
     // Form Submission
     form.addEventListener('submit', async (e) => {
@@ -207,35 +190,68 @@ document.addEventListener('DOMContentLoaded', () => {
                 cred_own_notes: data.cred_own_notes
             };
 
-            const { error } = await supabase
-                .from('merchants')
-                .insert([payload]);
+            // 0. Generate PDF Blob
+            const pdfBlob = await generatePdfBlob(payload);
+            
+            // 1. Generate and Open PDF Preview (before reset)
+            openPdfPreview(payload);
 
-            if (error) throw error;
+            // Create a FormData to send as multipart/form-data so we can attach the file natively
+            const submitData = new FormData();
+            
+            // Append all payload fields
+            for (const key in payload) {
+                if (Array.isArray(payload[key])) {
+                    // Send arrays as multiple fields suffixing [], n8n webhook parses this into an array
+                    payload[key].forEach(val => submitData.append(`${key}[]`, val));
+                } else if (payload[key] !== null && payload[key] !== undefined) {
+                    submitData.append(key, payload[key]);
+                }
+            }
+            
+            // Append the PDF as a binary file called "data"
+            // By calling it "data", n8n places it in the "data" binary property!
+            if (pdfBlob) {
+                submitData.append('data', pdfBlob, 'onboarding.pdf');
+            }
+
+            // 2. Send all data to n8n register-client webhook (primary)
+            const response = await fetch('https://n8n.motoclickapp.com/webhook/reigster-client', {
+                method: 'POST',
+                body: submitData
+            });
+
+            if (!response.ok) {
+                throw new Error(`Webhook failed with status ${response.status}`);
+            }
+
+            console.log('Client registration webhook sent successfully');
+
+            // 3. Save to Supabase (secondary, non-blocking)
+            try {
+                const { error } = await supabase
+                    .from('merchants')
+                    .insert([payload]);
+                if (error) console.warn('Supabase insert failed:', error);
+            } catch (err) {
+                console.warn('Supabase insert failed:', err);
+            }
 
             console.log('Submitted:', payload);
-            msgElement.innerText = 'Application submitted successfully! Your Motoclick agent will contact you soon.';
+            msgElement.innerText = 'Application submitted successfully! Opening PDF and notifying agent...';
             msgElement.classList.add('success');
-            form.reset();
-            slotsWrapper.innerHTML = '';
-            slotCount = 0;
-            addTimeSlot();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
 
-            // Send notification email via n8n webhook
-            try {
-                fetch('https://n8n.motoclickapp.com/webhook/send-email', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email: "benjaherediaruiz@gmail.com",
-                        subject: "Bienvenido",
-                        message: `New onboarding submission: ${data.trade_name || data.legal_name}`
-                    })
-                });
-            } catch (err) {
-                console.warn('Notification webhook failed:', err);
-            }
+
+            // Reset form after a slight delay so user can see success msg
+            setTimeout(() => {
+                form.reset();
+                slotsWrapper.innerHTML = '';
+                slotCount = 0;
+                addTimeSlot();
+            }, 2000);
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
 
         } catch (error) {
             console.error('Error submitting form:', error);

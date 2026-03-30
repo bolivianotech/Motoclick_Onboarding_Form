@@ -1,8 +1,35 @@
-export function openPdfPreview(data) {
+export function getPdfHtmlTemplate(data) {
     // We format arrays or empty data
     const formatValue = (val) => {
         if (Array.isArray(val)) return val.length > 0 ? val.join(', ') : 'None';
         return val ? val : 'N/A';
+    };
+
+    // Format operating hours from JSON string into a readable HTML table
+    const formatOperatingHours = (jsonStr) => {
+        try {
+            const slots = JSON.parse(jsonStr);
+            if (!Array.isArray(slots) || slots.length === 0) return 'N/A';
+            let html = `<table class="hours-table">
+                <thead><tr><th>Days</th><th>Open</th><th>Close</th><th>Valid Period</th></tr></thead>
+                <tbody>`;
+            slots.forEach(slot => {
+                const days = (slot.days && slot.days.length > 0) ? slot.days.join(', ') : 'No days selected';
+                const open = slot.open || '—';
+                const close = slot.close || '—';
+                let period = '—';
+                if (slot.valid_from || slot.valid_to) {
+                    const from = slot.valid_from || '...';
+                    const to = slot.valid_to || '...';
+                    period = `${from} → ${to}`;
+                }
+                html += `<tr><td>${days}</td><td>${open}</td><td>${close}</td><td>${period}</td></tr>`;
+            });
+            html += '</tbody></table>';
+            return html;
+        } catch (e) {
+            return formatValue(jsonStr);
+        }
     };
 
     const htmlTemplate = `
@@ -111,6 +138,30 @@ export function openPdfPreview(data) {
             border-top: 1px solid #eee;
             padding-top: 10px;
         }
+        .hours-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 6px;
+            font-size: 12px;
+        }
+        .hours-table th {
+            background-color: #f5f5f5;
+            text-align: left;
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #555;
+            font-weight: bold;
+        }
+        .hours-table td {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            font-size: 13px;
+        }
+        .hours-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
 
         /* Print Specifics */
         @media print {
@@ -143,7 +194,7 @@ export function openPdfPreview(data) {
                 <div class="field"><span class="label">Number of Locations</span><span class="value">${formatValue(data.locations)}</span></div>
                 <div class="field"><span class="label">Business Type</span><span class="value">${formatValue(data.business_type)}</span></div>
                 <div class="field grid-full"><span class="label">Main Address</span><span class="value">${formatValue(data.address)}</span></div>
-                <div class="field grid-full"><span class="label">Operating Hours</span><span class="value">${formatValue(data.operating_hours)}</span></div>
+                <div class="field grid-full"><span class="label">Operating Hours</span><div class="value">${formatOperatingHours(data.operating_hours)}</div></div>
             </div>
         </div>
 
@@ -218,15 +269,18 @@ export function openPdfPreview(data) {
 
         <script>
             window.onload = function() {
-                setTimeout(function() {
-                    window.print();
-                }, 800);
+                window.print();
             };
         </script>
     </body>
     </html>
     `;
 
+    return htmlTemplate;
+}
+
+export function openPdfPreview(data) {
+    const htmlTemplate = getPdfHtmlTemplate(data);
     const printWindow = window.open('', '_blank');
     if (printWindow) {
         printWindow.document.open();
@@ -235,4 +289,54 @@ export function openPdfPreview(data) {
     } else {
         alert("Please allow popups for this website to generate PDFs.");
     }
+}
+
+export async function generatePdfBlob(data) {
+    const htmlTemplate = getPdfHtmlTemplate(data);
+    const cleanHtml = htmlTemplate.replace(/<div class="no-print"[\s\S]*?<\/div>/, '');
+
+    return new Promise((resolve) => {
+        // Use an iframe to perfectly emulate a fresh browser window parser
+        // This ensures the <style>, <body>, and @media CSS are perfectly preserved
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'fixed';
+        iframe.style.width = '800px';
+        iframe.style.height = '1120px'; // Approx A4/Letter size
+        iframe.style.top = '0';
+        iframe.style.left = '0';
+        iframe.style.zIndex = '-9999';
+        document.body.appendChild(iframe);
+
+        iframe.contentWindow.document.open();
+        iframe.contentWindow.document.write(cleanHtml);
+        iframe.contentWindow.document.close();
+
+        // Give it time to render the layout and load the base64 logo
+        setTimeout(async () => {
+            const opt = {
+                margin:       [0.5, 0, 0.5, 0], // use explicit array to avoid html2pdf margin bugs on edges
+                filename:     'onboarding.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, windowWidth: 800 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            try {
+                // target the body of the fully loaded iframe
+                const element = iframe.contentWindow.document.body;
+                const worker = html2pdf().set(opt).from(element);
+                const pdfBlob = await worker.output('blob');
+                
+                // Cleanup
+                document.body.removeChild(iframe);
+                resolve(pdfBlob);
+            } catch (err) {
+                console.error('Error generating PDF blob:', err);
+                if (document.body.contains(iframe)) {
+                    document.body.removeChild(iframe);
+                }
+                resolve(null);
+            }
+        }, 1200); // 1.2s delay ensures all UI reflow is complete inside iframe
+    });
 }

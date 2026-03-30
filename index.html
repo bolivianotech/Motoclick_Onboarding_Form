@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Motoclick - Onboarding</title>
     <link rel="stylesheet" href="./style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
     <div class="ios-app">
         <header class="ios-navbar">
-            <h1>Motoclick Onboarding</h1>
+            <img src="./assets/header.png" alt="Motoclick Logo Banner" class="navbar-logo">
             <p>Complete this form to activate your account</p>
         </header>
 
@@ -285,14 +286,7 @@
                 <div class="form-footer">
                     <p class="footer-note">Once submitted, your Motoclick agent will contact you within 2 hours - Discovery call within 24 hours - Proposal & contract within 48 hours</p>
                     
-                    <!-- Step 1: Generate and print the PDF first -->
-                    <button type="button" id="btn-generate-pdf" class="ios-button" style="background-color: #007AFF; margin-bottom: 12px;">Step 1 — Generate & Print PDF</button>
-                    
-                    <!-- Step 2: locked until PDF is generated -->
-                    <div id="pdf-notice" class="ios-notice warning" style="margin-bottom: 12px;">
-                        ⚠️ Please generate and print the PDF document first before submitting.
-                    </div>
-                    <button type="submit" id="btn-submit" class="ios-button" disabled style="opacity: 0.4; cursor: not-allowed;">Step 2 — Submit Application</button>
+                    <button type="submit" id="btn-submit" class="ios-button">Submit Application</button>
                     <div id="form-msg" class="form-message"></div>
                 </div>
 

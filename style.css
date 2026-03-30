@@ -34,26 +34,32 @@ body {
 }
 
 .ios-navbar {
-    background-color: var(--ios-blue);
-    color: white;
-    padding: 20px;
+    background-color: white;
+    color: var(--ios-text);
+    padding: 0;
     text-align: center;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-bottom: 3px solid var(--ios-orange);
 }
 
-.ios-navbar h1 {
-    font-size: 24px;
-    font-weight: 600;
-    letter-spacing: -0.5px;
-    margin-bottom: 4px;
+.navbar-logo {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 .ios-navbar p {
     font-size: 14px;
-    opacity: 0.9;
+    color: var(--ios-text-secondary);
+    margin: 0;
+    padding: 8px 16px 12px;
+}
+
+@media (max-width: 600px) {
+    .ios-navbar p {
+        font-size: 12px;
+        padding: 6px 12px 10px;
+    }
 }
 
 .ios-content {
@@ -283,7 +289,7 @@ textarea {
 }
 
 .ios-button:disabled {
-    background-color: #A1C6FF;
+    background-color: #e8b87a;
     cursor: not-allowed;
 }
 
